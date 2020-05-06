@@ -6,9 +6,9 @@
 A trivia app for students where they can register and play quizzes with other students, or add quiz games of thier own for practise to exam.
 
 ## API detailed overview
-In the back-end graphql is attend to use for login, register, add & delet quizzes. Connection & inneraction from fron to back is done through WebSocket with JWT authentication. Access is handel by passport and theres a validaitor function that validates and tells are the username and password within the parameter
+In the back-end graphql is attend to use for login, register, add & delet quizzes. Connection & inneraction from fron to back is done through WebSocket (a persistent connection between a client and server) with JWT authentication. Access is handel by passport and theres a validaitor function that validates and tells are the username and password within the parameter.
 
-Fro now theres only option to play quizzes which questions and answers are downloaded from OpenTDB, parsed and inserted into database.
+For now theres only option to play quizzes which questions and answers are downloaded from OpenTDB, parsed and inserted into database.
 
 ```sh
 # In ./app folder
@@ -44,5 +44,6 @@ $ yarn run server
         But that could lead to several breaking end and MongoDB connection could stop.
 -   [ ] Reduce the implement of Redux in front end by using graphql queirs to login, register,
         add & delete own quizzes. Need to figur out how to use graphql queeris in login, regis, add & delet quizzes.
--   [ ] How to figure out function taht only specific user can add quizzes and decide how many time can same user particitape it.        
+-   [ ] How to figure out function taht only specific user can add quizzes and decide how many time can same user particitape it. 
+-   [ ] Add server timer to wevsocket-
 
