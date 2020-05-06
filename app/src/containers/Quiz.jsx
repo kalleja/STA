@@ -169,29 +169,8 @@ class Quiz extends Component {
 
         return (
             <div>
-               <Dialog open={jwtError !== ""}>
-                    <DialogTitle>Authentication Error</DialogTitle>
-                    <DialogContent>{jwtError}</DialogContent>
-                    <DialogActions>
-                        <Link to="/dashboard">
-                            <DialogButton>Close</DialogButton>
-                        </Link>
-                    </DialogActions>
-                </Dialog>
-                <Dialog
-                    open={this.state.isDialogOpen}
-                    onClose={evt => this.handleDialogClose(evt)}
-                >
-                    <DialogTitle>Are you sure?</DialogTitle>
-                    <DialogContent>You will not get any points</DialogContent>
-                    <DialogActions>
-                        <DialogButton action="close">Cancel</DialogButton>
-                        <DialogButton action="accept" isDefaultAction>
-                            Yes
-                        </DialogButton>
-                    </DialogActions>
-                </Dialog>
-                <TopAppBar>
+               
+               <TopAppBar>
                     <TopAppBarRow>
                         <TopAppBarSection alignEnd>
                             {isInProgress ? (
@@ -206,7 +185,8 @@ class Quiz extends Component {
                                 <Link to="/dashboard">
                                     <Button unelevated>
                                         <ButtonIcon icon="arrow_back" />
-                                        Back to Dashboard
+                                        Back to Dashboard. Note this: If you goe during quiz time 
+                                        back to dashbord you dont get any points at all.
                                     </Button>
                                 </Link>
                             )}
