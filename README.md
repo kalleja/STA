@@ -1,18 +1,14 @@
-# Quiz App
+# Student Trivia App
 
-![screenshot-localhost-8080-2019 01 02-15-30-24](https://user-images.githubusercontent.com/11415818/50596102-5af56300-0ea3-11e9-9254-c47467676ac9.png)
 
 ## Short overview
 
-A real-time application, where users can register and play quizzes together, earn points and compete with each other.
+A trivia app for students where they can register and play quizzes with other students, or add quiz games of thier own for practise to exam.
 
-## More detailed overview
+## API detailed overview
+In the back-end graphql is attend to use for login, register, add & delet quizzes. Connection & inneraction from fron to back is done through WebSocket with JWT authentication. Access is handel by passport and theres a validaitor function that validates and tells are the username and password within the parameter
 
-Application with public and protected links for access control, handled by Passport on the back-end. Registered users can take part in quiz games in real-time with other players. All the game interactions are done through WebSocket with JWT authentication. Initial quiz questions and answers are downloaded from OpenTDB, parsed and inserted into database.
-
-## Run locally
-
-The local app expects MongoDB to be running on `mongodb://localhost:27017`.
+Fro now theres only option to play quizzes which questions and answers are downloaded from OpenTDB, parsed and inserted into database.
 
 ```sh
 # In ./app folder
@@ -27,13 +23,14 @@ $ yarn run server
 **Front-end**
 
 -   React
--   Redux
+-   (Redux)
 -   Immutable.js
 
 **Back-end**
 
 -   NodeJS
--   Express API
+-   Express
+-   Gaphql
 -   Passport authentication
 -   WebSockets with JWT authentication
 
@@ -43,13 +40,9 @@ $ yarn run server
 
 ## TODO
 
--   [ ] Better error handling in back-end
--   [ ] Serve timer from back-end via WebSockets
--   [ ] Add `status` property to Quiz object in DB
--   [ ] Do not allow users to retry quizzes once successfully completed
+-   [ ] How resolve the vulnerability that VsCode decets in app and suggest user to run npm audit fix.
+        But that could lead to several breaking end and MongoDB connection could stop.
+-   [ ] Reduce the implement of Redux in front end by using graphql queirs to login, register,
+        add & delete own quizzes. Need to figur out how to use graphql queeris in login, regis, add & delet quizzes.
+-   [ ] How to figure out function taht only specific user can add quizzes and decide how many time can same user particitape it.        
 
-## Demo
-
-**Heroku App**
-
-Link: https://react-redux-ws-passport.herokuapp.com
