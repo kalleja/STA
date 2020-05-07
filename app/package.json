@@ -21,7 +21,7 @@
   },
   "scripts": {
     "build": "NODE_ENV=production react-scripts build",
-    "app": "NODE_ENV=development HTTPS=true PORT=8080 react-scripts start"
+    "app": "NODE_ENV=development PORT=8080 react-scripts start"
   },
   "proxy": "http://localhost:3000",
   "browserslist": [
