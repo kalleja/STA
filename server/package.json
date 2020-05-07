@@ -1,33 +1,35 @@
 {
-    "name": "react-redux-websockets-passport-server",
-    "version": "0.0.1",
-    "description": "The server part of the App",
-    "author": "ievgen11",
-    "dependencies": {
-        "axios": "^0.17.1",
-        "bcryptjs": "^2.4.3",
-        "body-parser": "^1.18.2",
-        "cli-progress": "^2.1.1",
-        "connect-mongo": "^2.0.1",
-        "express": "^4.16.2",
-        "express-graphql": "^0.9.0",
-        "express-session": "^1.15.6",
-        "immutable": "^3.8.2",
-        "jsonwebtoken": "^8.3.0",
-        "lodash": "^4.17.15",
-        "mongoose": "^5.0.2",
-        "morgan": "^1.9.0",
-        "passport": "^0.4.0",
-        "passport-local": "^1.0.0",
-        "validator": "^10.9.0",
-        "ws": "^6.1.0"
-    },
-    "scripts": {
-        "start": "node ./server.js",
-        "server": "NODE_ENV=development nodemon ./server.js"
-    },
-    "devDependencies": {
-        "nodemon": "^1.17.5"
-    },
-    "proxy": "http://localhost:3000"
+  "name": "sta-server",
+  "version": "0.0.1",
+  "description": "The server part of the App",
+  "author": "ievgen11",
+  "dependencies": {
+    "axios": "^0.17.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.2",
+    "cli-progress": "^2.1.1",
+    "connect-mongo": "^2.0.1",
+    "express": "^4.16.2",
+    "express-graphql": "^0.9.0",
+    "express-session": "^1.15.6",
+    "immutable": "^3.8.2",
+    "jsonwebtoken": "^8.3.0",
+    "lodash": "^4.17.15",
+    "mongoose": "^5.0.2",
+    "morgan": "^1.9.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "validator": "^10.9.0",
+    "ws": "^6.1.0"
+  },
+  "scripts": {
+    "start": "node ./server.js",
+    "server": "NODE_ENV=development nodemon ./server.js"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5"
+  },
+  "proxy": "http://localhost:3000",
+  "main": "server.js",
+  "license": "ISC"
 }
