@@ -53,5 +53,5 @@ In order to run application in you local machine privatly, follow the instructio
 -   [ ] Reduce the implement of Redux in front end by using graphql queirs to login, register,
         add & delete own quizzes. Need to figur out how to use graphql queeris in login, regis, add & delet quizzes.
 -   [ ] How to figure out function taht only specific user can add quizzes and decide how many time can same user particitape it. 
--   [ ] Add server timer to wevsocket-
+-   [ ] Add server timer to websocket-
 
