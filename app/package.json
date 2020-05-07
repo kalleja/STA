@@ -1,8 +1,8 @@
 {
   "name": "sta-app",
   "version": "0.0.1",
-  "description": "The frontend part of the App",
-  "author": "ievgen11",
+  "description": "The frontend part of the project",
+  "author": "kalleja",
   "dependencies": {
     "axios": "^0.19.2",
     "immutable": "^3.8.2",
