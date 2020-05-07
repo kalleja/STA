@@ -1,8 +1,8 @@
 {
   "name": "sta-server",
   "version": "0.0.1",
-  "description": "The server part of the App",
-  "author": "ievgen11",
+  "description": "The server part of the project",
+  "author": "kalleja",
   "dependencies": {
     "axios": "^0.17.1",
     "bcryptjs": "^2.4.3",
