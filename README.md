@@ -1,5 +1,5 @@
 # Student Trivia App
-#Thi is server side fram shcool project.
+#This is server side fram shcool project.
 
 ## Short overview
 
