@@ -17,6 +17,14 @@ $ yarn run app
 $ yarn run server
 
 ```
+# NOTE!
+When you run the app folde by "yarn run app" commande, what user needs to know that in start script the HTTPS protocol is set to be true so that the application can and must be run safley in lochalhost enviroment. When you ahve install app and run it, the first thing that will pop up first time run is error message that your connection is not private:
+
+https://i.stack.imgur.com/RbSRJ.png
+
+In order to run application in you local machine privatly, follow the instruction in this blog uppdate: https://medium.com/@danielgwilson/https-and-create-react-app-3a30ed31c904 at the chapter "Trusting the SSL certificate" so that you can run the app in HTTPS enviroment.
+
+
 
 ## Tools used
 
