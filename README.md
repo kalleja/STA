@@ -55,6 +55,4 @@ In order to run application in you local machine privatly, follow the instructio
 -   [ ] How to figure out function taht only specific user can add quizzes and decide how many time can same user particitape it. 
 -   [ ] Add server timer to websocket-
 
-## Link to try out the app: 
-https://staproject.herokuapp.com/
-Note: the data is fetch from a mongo cloud db that sometimes is not availabel but usually is. 
+ 
