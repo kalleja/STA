@@ -8,6 +8,7 @@ A trivia app for students where they can register and play quizzes with other st
 ## API detailed overview
 In the back-end graphql is attend to use for login, register, add & delet quizzes. Connection & inneraction from fron to back is done through WebSocket (a persistent connection between a client and server) with JWT authentication. Access is handel by passport and theres a validaitor function that validates and tells are the username and password within the parameter.
 
+
 For now theres only option to play quizzes which questions and answers are downloaded from OpenTDB, parsed and inserted into database.
 
 ```sh
