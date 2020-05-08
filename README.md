@@ -1,5 +1,5 @@
 # Student Trivia App
-#This is server side fram shcool project.
+#This is server side frame shcool project Metropolia UAS. Made with Create-React-App
 
 ## Short overview
 
