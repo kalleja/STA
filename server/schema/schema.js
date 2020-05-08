@@ -16,6 +16,10 @@ const {
             
 } = graphql;
 
+const bcrypt = require('bcrypt');
+const saltRound = 12;
+
+
 const AuthService = require('../routes/auth');
 
 const userType = new GraphQLObjectType({
@@ -23,6 +27,7 @@ const userType = new GraphQLObjectType({
   fields: () => ({
   id:  {type:  GraphQLID   },
     name: {type: GraphQLString},
+    password: {type: GraphQLString },
     points: {type: GraphQLInt},
     total_points:{type: GraphQLInt},
     quizzes: {
@@ -174,16 +179,43 @@ checkAuth(req, res, 'admin');*/
 
           signup: {
             type: userType,
+            description: 'Register user.',
             args: {
-              name: { type: GraphQLString },
-              password: { type: GraphQLString },
+              name: {type: new GraphQLNonNull(GraphQLString)},
+              password: {type: new GraphQLNonNull(GraphQLString)},
+              
             },
-            // request below is the Request Object that is passed from the FE
-            // (browser) to GraphQL.  (request === 'context' in some literature)
-            resolve(parentValue, { name, password }, req) {
-              return AuthService.signup({ name, password, req });
-            }
+            resolve: async (parent, args, {req, res}) => {
+              try {
+                const hash = await bcrypt.hash(args.password, saltRound);
+                const userWithHash = {
+                  ...args,
+                  password: hash,
+                };
+                const newUsers = new Users(userWithHash);
+                const result = await newUsers.save();
+                if (result !== null) {
+                  // automatic login
+                  req.body = args; // inject args to request body for passport
+                  const authResponse = await AuthService.login(req, res);
+                  console.log('ar', authResponse);
+                  return {
+                    id: authResponse.user._id,
+                    ...authResponse.user,
+                    token: authResponse.token,
+                  };
+                } else {
+                  throw new Error('insert fail');
+                }
+              }
+              catch (err) {
+                throw new Error(err);
+              }
+            },
           },
+      
+
+
           logout: {
             type: userType,
             resolve(parentValue, args, req) {
@@ -193,18 +225,7 @@ checkAuth(req, res, 'admin');*/
             }
           },
 
-          login: {
-      type:userType,
-      args: {
-        name: { type: GraphQLString},
-        password: { type:GraphQLString }
-      },
-      resolve(parentValue, { name, password }, req) {
-        return AuthService.logIn({ name, password, req });
-      }
-    }
-
-        },         
+         },         
     });
   
 
