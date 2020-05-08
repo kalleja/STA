@@ -55,5 +55,5 @@ In order to run application in you local machine privatly, follow the instructio
         add & delete own quizzes. Need to figur out how to use graphql queeris in login, regis, add & delet quizzes.
 -   [ ] How to figure out function taht only specific user can add quizzes and decide how many time can same user particitape it. 
 -   [ ] Add server timer to websocket-
-
+-   [ ] Figur out how the "sing up" mutation checks from validation that user credential are witin absolut parameters.
  
