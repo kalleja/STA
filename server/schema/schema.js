@@ -108,27 +108,7 @@ const RootQuery = new GraphQLObjectType({
                 throw new Error(err);
               }
             },
-          },
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          
+          },          
 
   }});
 
@@ -143,9 +123,9 @@ const Mutation = new GraphQLObjectType({
             type: quizType,
             args: {
                 name: { type: new GraphQLNonNull(GraphQLString) },
-                questions: { type: new GraphQLNonNull(GraphQLList(GraphQLString)) },
-                answers:{type: new GraphQLNonNull( GraphQLList(GraphQLString))},
-                answer_id:{type: new GraphQLNonNull(GraphQLString)},
+                questions: { type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(quizType))) },
+                answers:{type: new GraphQLList(new GraphQLNonNull(GraphQLString))},
+                answer_id:{type: new GraphQLNonNull(GraphQLID)},
                 quizId: { type: new GraphQLNonNull(GraphQLID) }
             },
             resolve(parent, args){
