@@ -1,4 +1,3 @@
-
 const graphql = require('graphql');
 const Quiz = require('../models/quiz');
 const Users = require('../models/user');
@@ -13,6 +12,7 @@ const {
     GraphQLInt,
     GraphQLList,
     GraphQLNonNull,
+    GraphQLBoolean
             
 } = graphql;
 
@@ -21,10 +21,7 @@ const AuthService = require('../routes/auth');
 const userType = new GraphQLObjectType({
   name: 'User',
   fields: () => ({
-  id:  {type:  (GraphQLList(GraphQLID))   },
-
-
-
+  id:  {type:  GraphQLID   },
     name: {type: GraphQLString},
     points: {type: GraphQLInt},
     total_points:{type: GraphQLInt},
@@ -41,13 +38,11 @@ const userType = new GraphQLObjectType({
 const quizType = new GraphQLObjectType({
   name: 'Quizzes',
   fields: ( ) => ({
-      id: {type: (GraphQLList(GraphQLID))  },
-
-
+      id: {type: GraphQLID },
       name: { type: GraphQLString },
-      questions: {type: new GraphQLList(quizType)},
-     answers:{type: new GraphQLList(GraphQLString)},
-     answer_id:{type:GraphQLInt},
+      questions: {type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(quizType)))},
+     answers:{type:new GraphQLList(new GraphQLNonNull(GraphQLString))},
+     answer_id:{type: GraphQLID},
      _V:{type:GraphQLInt},               
       users: {
           type: new GraphQLList(userType),
@@ -61,50 +56,84 @@ const quizType = new GraphQLObjectType({
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
-    users: {
-      type: new GraphQLNonNull(new GraphQLList(userType)),
 
-      args: { ID: {type: (GraphQLList(GraphQLID))}  },
+     user: {
+            type: userType,
+            args: { id: { type: GraphQLID } },
+            resolve(parent, args){
+                return Users.findById(args.id);
+            }
+        },
 
-      description: 'Get all user',
-      resolve: async (parent, args) => {
-        try {
-          return Quiz.findById(args.id);
-      }
-      catch (e) {
-        return new Error(e.message);
-      }
-    } 
-  },
-
-      quiz: {
-          type: new GraphQLList(quizType),
-          args: { id: {type: (GraphQLList(GraphQLID)) } },
-
-          resolve: async (parent, args) => {
-            try {
-              return Quiz.findById(args);
+        quiz: {
+          type: quizType,
+          args: { id: { type: GraphQLID } },
+          resolve(parent, args){
+              return Quiz.findById(args.id);
           }
-          catch (e) {
-            return new Error(e.message);
-          }
-        }
       },
       quizzes: {
           type: new GraphQLList(quizType),
-          
-          resolve: async (parent, args) => {
-            try {
-              return Quiz.findById({});
+          resolve(parent, args){
+              return Quiz.find({});
           }
-          catch (e) {
-            return new Error(e.message);
-          }
-        }    
-  }
-}
+      },
+      users: {
+          type: new GraphQLList(userType),
+          resolve(parent, args){
+              return Users.find({});    
+              }
+          },
 
-});
+          login: {
+            type: userType,
+            description: 'Login with username and password to receive token.',
+            args: {
+              name: {type: new GraphQLNonNull(GraphQLString)},
+              password: {type: new GraphQLNonNull(GraphQLString)},
+            },
+            resolve: async (parent, args, {req, res}) => {
+              console.log('arks', args);
+              req.body = args; // inject args to reqest body for passport
+              try {
+                const authResponse = await AuthService.login(req, res);
+                console.log('ar', authResponse);
+                return {
+                  id: authResponse.user._id,
+                  ...authResponse.user,
+                  token: authResponse.token,
+                };
+              }
+              catch (err) {
+                throw new Error(err);
+              }
+            },
+          },
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+
+  }});
+
+
+
 
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
@@ -136,7 +165,6 @@ const Mutation = new GraphQLObjectType({
     }
   })(req, res);
 };
-
 checkAuth(req, res, 'admin');*/
 
 
