@@ -123,7 +123,7 @@ const Mutation = new GraphQLObjectType({
             type: quizType,
             args: {
                 name: { type: new GraphQLNonNull(GraphQLString) },
-                questions: { type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(quizType))) },
+                questions: { type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(GraphQLInt))) },
                 answers:{type: new GraphQLList(new GraphQLNonNull(GraphQLString))},
                 answer_id:{type: new GraphQLNonNull(GraphQLID)},
                 quizId: { type: new GraphQLNonNull(GraphQLID) }
