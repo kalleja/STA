@@ -1,3 +1,3 @@
 module.exports = {
-    WEB_SOCKET_URL: "ws://localhost:3000"
+    WEB_SOCKET_URL: "ws://localhost:4000"
 };

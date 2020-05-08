@@ -40,8 +40,8 @@ class QuizList extends Component {
         this.props.getQuizList();
     }
 
-    handleQuizClick({ _id, usersCount, maxUsersCount }) {
-        if (usersCount >= maxUsersCount) {
+    handleQuizClick({ _id, usersCount }) {
+        if (usersCount ) {
             return;
         }
 

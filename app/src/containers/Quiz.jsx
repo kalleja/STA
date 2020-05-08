@@ -186,7 +186,7 @@ class Quiz extends Component {
                                     <Button unelevated>
                                         <ButtonIcon icon="arrow_back" />
                                         Back to Dashboard. Note this: If you goe during quiz time 
-                                        back to dashbord you dont get any points at all.
+                                        back you dont get any points at all.
                                     </Button>
                                 </Link>
                             )}
