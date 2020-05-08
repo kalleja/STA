@@ -13,7 +13,7 @@ For now theres only option to play quizzes which questions and answers are downl
 
 ```sh
 # In ./app folder
-$ yarn run app
+$ yarn start
 # In ./server folder
 $ yarn run server
 
