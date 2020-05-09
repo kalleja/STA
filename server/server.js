@@ -22,6 +22,9 @@ const SESSION_EXPIRATION = require("./config").SESSION_EXPIRATION;
 
 const app = express();
 
+app.use(express.static(path.join(__dirname, 'app')));
+app.use('*', (req, res) => res.sendFile(path.join(__dirname, 'app' ,)));
+
 app.use(morgan("dev"));
 app.use(bodyParser.json()); 
 
