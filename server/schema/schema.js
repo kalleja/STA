@@ -93,7 +93,26 @@ const RootQuery = new GraphQLObjectType({
               }
           },
 
-                 
+          login: {
+            type: userType,
+            description: 'Login with username and password to receive token.',
+            args: {
+              name: {type: new GraphQLNonNull(GraphQLString)},
+              password: {type: new GraphQLNonNull(GraphQLString)},
+            },
+            resolve: async (parent, args, {req, res}) => {
+              console.log('arks', args);
+              req.body = args; // inject args to reqest body for passport
+              try {
+                const authResponse = await AuthService.login(req, res);
+                console.log('ar', authResponse);
+              
+              }
+              catch (err) {
+                throw new Error(err);
+              }
+            },
+          },          
 
   }});
 
@@ -157,51 +176,52 @@ checkAuth(req, res, 'admin');*/
           },
 
 
-          
           signup: {
             type: userType,
+            description: 'Register user.',
             args: {
-              name: { type: GraphQLString },
-              password: { type: GraphQLString },
+              name: {type: new GraphQLNonNull(GraphQLString)},
+              password: {type: new GraphQLNonNull(GraphQLString)},
+              
             },
-            // request below is the Request Object that is passed from the FE
-            // (browser) to GraphQL.  (request === 'context' in some literature)
-            resolve(parentValue, { name, password }, req) {
-              console.log('arks', args);
-              req.body = args; // inject args to reqest body for passport
-              return AuthService.signup({ name, password, req });
-            }
+            resolve: async (parent, args, {req, res}) => {
+              try {
+                const hash = await bcrypt.hash(args.password, saltRound);
+                const userWithHash = {
+                  ...args,
+                  password: hash,
+                };
+                const newUsers = new Users(userWithHash);
+                const result = await newUsers.save();
+                if (result !== null) {
+                  // automatic login
+                  req.body = args; // inject args to request body for passport
+                  const authResponse = await AuthService.login(req, res);
+                  console.log('ar', authResponse);
+                  
+                } else {
+                  throw new Error('insert fail');
+                }
+              }
+              catch (err) {
+                throw new Error(err);
+              }
+            },
           },
+      
+
+
           logout: {
             type: userType,
             resolve(parentValue, args, req) {
-              console.log('arks', args);
-              req.body = args; // inject args to reqest body for passport
               const { user } = req;
               req.logout();
               return user;
             }
           },
 
-          login: {
-      type:userType,
-      args: {
-        name: { type: GraphQLString},
-        password: { type:GraphQLString }
-      },
-      resolve(parentValue, { name, password }, req) {
-        console.log('arks', args);
-              req.body = args; // inject args to reqest body for passport
-        return AuthService.logIn({ name, password, req });
-      }
-    }
-
-        },         
-    });
+        }})
       
-
-
-            
     
   
 
