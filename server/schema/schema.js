@@ -106,8 +106,8 @@ const RootQuery = new GraphQLObjectType({
               name: {type: new GraphQLNonNull(GraphQLString)},
               password: {type: new GraphQLNonNull(GraphQLString)},
             },                
-              resolve:async (root,  { name, password }, { user, userInfo }) => {
-                let user = await user.findOne({ name });
+              resolve:async (root,  { name, password }, { Users, userInfo }) => {
+                let user = await Users.findOne({ name });
                 if (!user) {
                   throw new LoginError();
                 }          
