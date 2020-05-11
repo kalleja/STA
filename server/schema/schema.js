@@ -15,15 +15,16 @@ const {
     GraphQLInt,
     GraphQLList,
     GraphQLNonNull,
-    GraphQLBoolean
+    GraphQLInputObjectType
+    
             
 } = graphql;
 
+
+const AuthService = require('../routes/authCheck');
+
 const bcrypt = require('bcrypt');
-const saltRound = 12;
 
-
-const AuthService = require('../routes/auth');
 
 const userType = new GraphQLObjectType({
   name: 'User',
@@ -36,7 +37,7 @@ const userType = new GraphQLObjectType({
     quizzes: {
       type: new GraphQLList(quizType),
       resolve(parent, args){
-          return Quiz.find({ userd: parent.id });
+          return Quiz.find( parent.userId );
       } 
   }
   }),
@@ -60,6 +61,9 @@ const quizType = new GraphQLObjectType({
       }
   })
 });
+
+
+
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -92,6 +96,8 @@ const RootQuery = new GraphQLObjectType({
               return Users.find({});    
               }
           },
+     
+
 
           login: {
             type: userType,
@@ -99,20 +105,39 @@ const RootQuery = new GraphQLObjectType({
             args: {
               name: {type: new GraphQLNonNull(GraphQLString)},
               password: {type: new GraphQLNonNull(GraphQLString)},
-            },
-            resolve: async (parent, args, {req, res}) => {
-              console.log('arks', args);
-              req.body = args; // inject args to reqest body for passport
-              try {
-                const authResponse = await AuthService.login(req, res);
-                console.log('ar', authResponse);
-              
+            },                
+              resolve:async (root,  { name, password }, { Users, userInfo }) => {
+                let user = await Users.findOne({ name });
+                if (!user) {
+                  throw new LoginError();
+                }          
+                // validate password
+                return bcrypt.compare(password, user.password).then(res => {
+                  if (res) {
+                    // create jwt
+                    user = tokenize(user);
+                    userInfo = { _id: user.id, name: user.name };
+                    return user;
+                  }
+                  throw new LoginError();
+                });
               }
-              catch (err) {
-                throw new Error(err);
-              }
             },
-          },          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   }});
 
@@ -175,8 +200,9 @@ checkAuth(req, res, 'admin');*/
             },
           },
 
-
-          signup: {
+                    
+         
+             signup: {
             type: userType,
             description: 'Register user.',
             args: {
@@ -184,34 +210,52 @@ checkAuth(req, res, 'admin');*/
               password: {type: new GraphQLNonNull(GraphQLString)},
               
             },
-            resolve: async (parent, args, {req, res}) => {
-              try {
-                const hash = await bcrypt.hash(args.password, saltRound);
-                const userWithHash = {
-                  ...args,
-                  password: hash,
-                };
-                const newUsers = new Users(userWithHash);
-                const result = await newUsers.save();
-                if (result !== null) {
-                  // automatic login
-                  req.body = args; // inject args to request body for passport
-                  const authResponse = await AuthService.login(req, res);
-                  console.log('ar', authResponse);
-                  
-                } else {
-                  throw new Error('insert fail');
-                }
-              }
-              catch (err) {
-                throw new Error(err);
-              }
-            },
+            resolve: async (root, { name, password }, { User, userInfo }) => {
+              let hash = await bcrypt.hash(password, 8);
+              return await User.create({ firstName: name,  password: hash })
+                .then(user => {
+                  user = tokenize(user);
+                  userInfo = { _id: user.id, name: user.name };
+                  return user;
+                })
+                .catch(err => {
+                  throw new RegistrationError();
+                });
+              
+            }
           },
-      
 
 
-          logout: {
+          changePassword:{
+            type: userType,
+            description: 'CHange password.',
+            args: {
+             
+              password: {type: new GraphQLNonNull(GraphQLString)},
+              
+            },
+            resolve:async (root, { oldPassword, newPassword }, { User, userInfo }) => {
+              let user = await User.findOne({ ...userInfo });
+              if (!user) {
+                throw new nameDoesNotExistError();
+              }
+              let passwordCheck = await bcrypt.compare(oldPassword, user.password);
+              if (!passwordCheck) {
+                throw new IncorrectPasswordError();
+              }
+              user.password = await bcrypt.hash(newPassword, 8);
+              try {
+                user = await user.save();
+                user = tokenize(user);
+                return user;
+              } catch (error) {
+                return error;
+              }
+            }
+
+            },
+
+                logout: {
             type: userType,
             resolve(parentValue, args, req) {
               const { user } = req;
@@ -220,12 +264,16 @@ checkAuth(req, res, 'admin');*/
             }
           },
 
-        }})
+       
+        }
+        }
+        )
       
-    
-  
+      
 
 module.exports = new GraphQLSchema({
     query: RootQuery,
-    mutation: Mutation
+    mutation: Mutation,
+    
+   
 });
