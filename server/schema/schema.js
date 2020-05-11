@@ -21,7 +21,7 @@ const {
 } = graphql;
 
 
-const AuthService = require('../routes/authCheck');
+const AuthService = require('../routes/auth');
 
 const bcrypt = require('bcrypt');
 
@@ -106,8 +106,8 @@ const RootQuery = new GraphQLObjectType({
               name: {type: new GraphQLNonNull(GraphQLString)},
               password: {type: new GraphQLNonNull(GraphQLString)},
             },                
-              resolve:async (root,  { name, password }, { Users, userInfo }) => {
-                let user = await Users.findOne({ name });
+              resolve:async (root,  { name, password }, { user, userInfo }) => {
+                let user = await user.findOne({ name });
                 if (!user) {
                   throw new LoginError();
                 }          
@@ -117,26 +117,12 @@ const RootQuery = new GraphQLObjectType({
                     // create jwt
                     user = tokenize(user);
                     userInfo = { _id: user.id, name: user.name };
-                    return user;
+                    return user; 
                   }
                   throw new LoginError();
                 });
               }
             },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   }});
