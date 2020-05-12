@@ -25,7 +25,7 @@ https://i.stack.imgur.com/RbSRJ.png
 
 In order to run application in you local machine privatly, follow the instruction in this blog uppdate: https://medium.com/@danielgwilson/https-and-create-react-app-3a30ed31c904 at the chapter "Trusting the SSL certificate" so that you can run the app in HTTPS enviroment.
 
-
+#If user manage to login but cant start quiz, its just balnk then it idicates that there was an error in JWT auhtentication.
 
 ## Tools used
 
