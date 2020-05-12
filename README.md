@@ -11,11 +11,12 @@ In the back-end graphql is attend to use for login, register, add & delet quizze
 
 For now theres only option to play quizzes which questions and answers are downloaded from OpenTDB, parsed and inserted into database.
 
+How start in local machine.
 ```sh
 # In ./app folder
-$ yarn start
+$ yarn install & yarn start 
 # In ./server folder
-$ yarn run server
+$ yarn install & yarn run server
 
 ```
 # NOTE!
